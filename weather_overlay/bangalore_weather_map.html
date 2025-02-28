@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_19f1bc470dc305f015cf4f817639e6bd {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+        <div style="position: relative;">
+            
+    <div id="weather-overlay" style="position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); pointer-events: none; opacity: 0.5; z-index: 1000;">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 200" width="400" height="200">
+            <!-- Definitions for reuse -->
+            <defs>
+                <!-- Cloud shape -->
+                <path id="cloud" d="M25,50 Q37.5,35 50,50 Q62.5,35 75,50 Q87.5,35 100,50 L100,65 L25,65 Z" fill="#E6E6E6"/>
+                
+                <!-- Rain drop -->
+                <path id="raindrop" d="M5,0 L8,5 L5,10 L2,5 Z" fill="#4F95FF"/>
+            </defs>
+            
+            <!-- Cloudy Area (Left Side) -->
+            <rect x="0" y="0" width="200" height="200" fill="#E8F4F8"/>
+            <g>
+                <use href="#cloud" x="20" y="20">
+                    <animateTransform
+                        attributeName="transform"
+                        type="translate"
+                        dur="4s"
+                        values="0,0; 15,0; 0,0"
+                        repeatCount="indefinite"/>
+                </use>
+                <use href="#cloud" x="80" y="50">
+                    <animateTransform
+                        attributeName="transform"
+                        type="translate"
+                        dur="6s"
+                        values="0,0; -15,0; 0,0"
+                        repeatCount="indefinite"/>
+                </use>
+                <use href="#cloud" x="40" y="80">
+                    <animateTransform
+                        attributeName="transform"
+                        type="translate"
+                        dur="5s"
+                        values="0,0; 20,0; 0,0"
+                        repeatCount="indefinite"/>
+                </use>
+            </g>
+            
+            <!-- Rainy Area (Right Side) -->
+            <rect x="200" y="0" width="200" height="200" fill="#D6E6F2"/>
+            <g>
+                <!-- Static clouds -->
+                <use href="#cloud" x="220" y="20"/>
+                <use href="#cloud" x="280" y="40"/>
+                <use href="#cloud" x="240" y="60"/>
+                
+                <!-- Raindrops with different starting positions -->
+                <g>
+                    <use href="#raindrop" x="240" y="70">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            dur="1s"
+                            values="0,0; 0,100"
+                            repeatCount="indefinite"/>
+                    </use>
+                    <use href="#raindrop" x="280" y="50">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            dur="1.2s"
+                            values="0,0; 0,100"
+                            repeatCount="indefinite"/>
+                    </use>
+                    <use href="#raindrop" x="320" y="80">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            dur="0.9s"
+                            values="0,0; 0,100"
+                            repeatCount="indefinite"/>
+                    </use>
+                    <use href="#raindrop" x="260" y="90">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            dur="1.1s"
+                            values="0,0; 0,100"
+                            repeatCount="indefinite"/>
+                    </use>
+                    <use href="#raindrop" x="300" y="60">
+                        <animateTransform
+                            attributeName="transform"
+                            type="translate"
+                            dur="1.3s"
+                            values="0,0; 0,100"
+                            repeatCount="indefinite"/>
+                    </use>
+                </g>
+            </g>
+        </svg>
+    </div>
+    
+        </div>
+    
+    
+            <div class="folium-map" id="map_19f1bc470dc305f015cf4f817639e6bd" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_19f1bc470dc305f015cf4f817639e6bd = L.map(
+                "map_19f1bc470dc305f015cf4f817639e6bd",
+                {
+                    center: [12.9716, 77.5946],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 11,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_9e84a2b5a6441db3e05552a135c0c5bf = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 19,
+  "maxNativeZoom": 19,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors",
+  "subdomains": "abc",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_9e84a2b5a6441db3e05552a135c0c5bf.addTo(map_19f1bc470dc305f015cf4f817639e6bd);
+        
+</script>
+</html>

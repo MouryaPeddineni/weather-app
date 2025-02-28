@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_1bfd92dcf2d7e66fa722354806cc7883 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+            <style>
+            .weather-icon {
+                position: relative;
+                width: 40px;
+                height: 40px;
+                border-radius: 50%;
+            }
+            
+            .sunny {
+                background: radial-gradient(circle at 50% 50%, 
+                    rgba(255, 165, 0, 0.8),
+                    rgba(255, 165, 0, 0.4));
+            }
+            
+            .cloudy {
+                background: radial-gradient(circle at 50% 50%, 
+                    rgba(169, 169, 169, 0.8),
+                    rgba(169, 169, 169, 0.4));
+            }
+            
+            .rainy {
+                background: radial-gradient(circle at 50% 50%, 
+                    rgba(0, 0, 255, 0.6),
+                    rgba(0, 0, 255, 0.3));
+            }
+            
+            .snow {
+                background: radial-gradient(circle at 50% 50%, 
+                    rgba(255, 255, 255, 0.8),
+                    rgba(255, 255, 255, 0.4));
+                border: 1px solid rgba(200, 200, 200, 0.5);
+            }
+            
+            .thunderstorm {
+                background: radial-gradient(circle at 50% 50%, 
+                    rgba(75, 0, 130, 0.8),
+                    rgba(75, 0, 130, 0.4));
+            }
+            
+            .legend-item {
+                margin-bottom: 5px;
+                display: flex;
+                align-items: center;
+            }
+            
+            .legend-color {
+                width: 20px;
+                height: 20px;
+                margin-right: 5px;
+                border-radius: 50%;
+            }
+            </style>
+        
+    
+            <div style="position: fixed; 
+                        bottom: 50px; right: 50px; 
+                        border: 2px solid grey; 
+                        z-index: 9999; 
+                        background-color: white;
+                        padding: 10px;
+                        border-radius: 5px;
+                        font-size: 14px;">
+                <p style="margin-bottom: 10px"><strong>Weather Conditions</strong></p>
+                <div class="legend-item">
+                    <div class="legend-color sunny"></div>
+                    <span>Sunny</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color cloudy"></div>
+                    <span>Cloudy</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color rainy"></div>
+                    <span>Rainy</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color snow"></div>
+                    <span>Snow</span>
+                </div>
+                <div class="legend-item">
+                    <div class="legend-color thunderstorm"></div>
+                    <span>Thunderstorm</span>
+                </div>
+            </div>
+        
+    
+            <div class="folium-map" id="map_1bfd92dcf2d7e66fa722354806cc7883" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_1bfd92dcf2d7e66fa722354806cc7883 = L.map(
+                "map_1bfd92dcf2d7e66fa722354806cc7883",
+                {
+                    center: [39.8283, -98.5795],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 4,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_bac3fc07d11082756d88280c6d281bee = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_bac3fc07d11082756d88280c6d281bee.addTo(map_1bfd92dcf2d7e66fa722354806cc7883);
+        
+    
+            var feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888 = L.featureGroup(
+                {
+}
+            );
+        
+    
+            var marker_1531a4ad6f72ef1cb676241a7da67d26 = L.marker(
+                [40.7128, -74.006],
+                {
+}
+            ).addTo(feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888);
+        
+    
+            var div_icon_fb0cf7c90cbe21f7063407d32f8f40e7 = L.divIcon({
+  "html": "\n                \u003cdiv class=\u0027weather-icon sunny\u0027\u003e\n                    \u003cdiv style=\u0027position: absolute; \n                               top: 50%; \n                               left: 50%; \n                               transform: translate(-50%, -50%);\n                               font-size: 20px;\u0027\u003e\n                        \u2600\ufe0f\n                    \u003c/div\u003e\n                \u003c/div\u003e\n            ",
+  "iconSize": [40, 40],
+  "iconAnchor": [20, 20],
+  "className": "empty",
+});
+            marker_1531a4ad6f72ef1cb676241a7da67d26.setIcon(div_icon_fb0cf7c90cbe21f7063407d32f8f40e7);
+        
+    
+        var popup_c71910747beccb3a2b0a1524b6c0c459 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_dd801ab9a329846ce4e718c2d4ade31d = $(`<div id="html_dd801ab9a329846ce4e718c2d4ade31d" style="width: 100.0%; height: 100.0%;">                 <div style='font-family: Arial; padding: 5px;'>                     <h4>New York</h4>                     <p>Condition: Sunny</p>                     <p>Temperature: 25°C</p>                 </div>             </div>`)[0];
+                popup_c71910747beccb3a2b0a1524b6c0c459.setContent(html_dd801ab9a329846ce4e718c2d4ade31d);
+            
+        
+
+        marker_1531a4ad6f72ef1cb676241a7da67d26.bindPopup(popup_c71910747beccb3a2b0a1524b6c0c459)
+        ;
+
+        
+    
+    
+            var marker_91a84f2a5daa30d9cfdcf1c5dec86717 = L.marker(
+                [41.8781, -87.6298],
+                {
+}
+            ).addTo(feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888);
+        
+    
+            var div_icon_99b78a775d2303915132cd3d96dca235 = L.divIcon({
+  "html": "\n                \u003cdiv class=\u0027weather-icon snow\u0027\u003e\n                    \u003cdiv style=\u0027position: absolute; \n                               top: 50%; \n                               left: 50%; \n                               transform: translate(-50%, -50%);\n                               font-size: 20px;\u0027\u003e\n                        \u2744\ufe0f\n                    \u003c/div\u003e\n                \u003c/div\u003e\n            ",
+  "iconSize": [40, 40],
+  "iconAnchor": [20, 20],
+  "className": "empty",
+});
+            marker_91a84f2a5daa30d9cfdcf1c5dec86717.setIcon(div_icon_99b78a775d2303915132cd3d96dca235);
+        
+    
+        var popup_5e71cc34976a4a86dea94794c7a61e76 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_66e7b317536982d22bd853a99cd3a30a = $(`<div id="html_66e7b317536982d22bd853a99cd3a30a" style="width: 100.0%; height: 100.0%;">                 <div style='font-family: Arial; padding: 5px;'>                     <h4>Chicago</h4>                     <p>Condition: Snow</p>                     <p>Temperature: -2°C</p>                 </div>             </div>`)[0];
+                popup_5e71cc34976a4a86dea94794c7a61e76.setContent(html_66e7b317536982d22bd853a99cd3a30a);
+            
+        
+
+        marker_91a84f2a5daa30d9cfdcf1c5dec86717.bindPopup(popup_5e71cc34976a4a86dea94794c7a61e76)
+        ;
+
+        
+    
+    
+            var marker_d1418843098e11e18ca7a8eec22c978a = L.marker(
+                [25.7617, -80.1918],
+                {
+}
+            ).addTo(feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888);
+        
+    
+            var div_icon_c0054ff4957b07241955272e23b98e12 = L.divIcon({
+  "html": "\n                \u003cdiv class=\u0027weather-icon thunderstorm\u0027\u003e\n                    \u003cdiv style=\u0027position: absolute; \n                               top: 50%; \n                               left: 50%; \n                               transform: translate(-50%, -50%);\n                               font-size: 20px;\u0027\u003e\n                        \u26c8\ufe0f\n                    \u003c/div\u003e\n                \u003c/div\u003e\n            ",
+  "iconSize": [40, 40],
+  "iconAnchor": [20, 20],
+  "className": "empty",
+});
+            marker_d1418843098e11e18ca7a8eec22c978a.setIcon(div_icon_c0054ff4957b07241955272e23b98e12);
+        
+    
+        var popup_5cba98c9500a1347d82798db1dda5003 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_6d4f241fdf2cade9f14cb7dbbc48251f = $(`<div id="html_6d4f241fdf2cade9f14cb7dbbc48251f" style="width: 100.0%; height: 100.0%;">                 <div style='font-family: Arial; padding: 5px;'>                     <h4>Miami</h4>                     <p>Condition: Thunderstorm</p>                     <p>Temperature: 30°C</p>                 </div>             </div>`)[0];
+                popup_5cba98c9500a1347d82798db1dda5003.setContent(html_6d4f241fdf2cade9f14cb7dbbc48251f);
+            
+        
+
+        marker_d1418843098e11e18ca7a8eec22c978a.bindPopup(popup_5cba98c9500a1347d82798db1dda5003)
+        ;
+
+        
+    
+    
+            var marker_64ab33c3719458a17a65784077ad61c6 = L.marker(
+                [39.7392, -104.9903],
+                {
+}
+            ).addTo(feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888);
+        
+    
+            var div_icon_5543d3a7b7d295b2a9b4c30b14ccf1df = L.divIcon({
+  "html": "\n                \u003cdiv class=\u0027weather-icon cloudy\u0027\u003e\n                    \u003cdiv style=\u0027position: absolute; \n                               top: 50%; \n                               left: 50%; \n                               transform: translate(-50%, -50%);\n                               font-size: 20px;\u0027\u003e\n                        \u2601\ufe0f\n                    \u003c/div\u003e\n                \u003c/div\u003e\n            ",
+  "iconSize": [40, 40],
+  "iconAnchor": [20, 20],
+  "className": "empty",
+});
+            marker_64ab33c3719458a17a65784077ad61c6.setIcon(div_icon_5543d3a7b7d295b2a9b4c30b14ccf1df);
+        
+    
+        var popup_c137a77971659fb71f0509d244ccf1b1 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_7c2bd3730f6cc2cd63c31c16aa0f042b = $(`<div id="html_7c2bd3730f6cc2cd63c31c16aa0f042b" style="width: 100.0%; height: 100.0%;">                 <div style='font-family: Arial; padding: 5px;'>                     <h4>Denver</h4>                     <p>Condition: Cloudy</p>                     <p>Temperature: 15°C</p>                 </div>             </div>`)[0];
+                popup_c137a77971659fb71f0509d244ccf1b1.setContent(html_7c2bd3730f6cc2cd63c31c16aa0f042b);
+            
+        
+
+        marker_64ab33c3719458a17a65784077ad61c6.bindPopup(popup_c137a77971659fb71f0509d244ccf1b1)
+        ;
+
+        
+    
+    
+            var marker_bf8397090c08ac7b5dfafdce57f62ecd = L.marker(
+                [34.0522, -118.2437],
+                {
+}
+            ).addTo(feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888);
+        
+    
+            var div_icon_adb17801af140e54bca920c471ced9fb = L.divIcon({
+  "html": "\n                \u003cdiv class=\u0027weather-icon sunny\u0027\u003e\n                    \u003cdiv style=\u0027position: absolute; \n                               top: 50%; \n                               left: 50%; \n                               transform: translate(-50%, -50%);\n                               font-size: 20px;\u0027\u003e\n                        \u2600\ufe0f\n                    \u003c/div\u003e\n                \u003c/div\u003e\n            ",
+  "iconSize": [40, 40],
+  "iconAnchor": [20, 20],
+  "className": "empty",
+});
+            marker_bf8397090c08ac7b5dfafdce57f62ecd.setIcon(div_icon_adb17801af140e54bca920c471ced9fb);
+        
+    
+        var popup_5678b7095649c1ddc0f9956c32f48aa5 = L.popup({
+  "maxWidth": 200,
+});
+
+        
+            
+                var html_e6d87c89c1f08d50fdf1d88b504b76a3 = $(`<div id="html_e6d87c89c1f08d50fdf1d88b504b76a3" style="width: 100.0%; height: 100.0%;">                 <div style='font-family: Arial; padding: 5px;'>                     <h4>Los Angeles</h4>                     <p>Condition: Sunny</p>                     <p>Temperature: 28°C</p>                 </div>             </div>`)[0];
+                popup_5678b7095649c1ddc0f9956c32f48aa5.setContent(html_e6d87c89c1f08d50fdf1d88b504b76a3);
+            
+        
+
+        marker_bf8397090c08ac7b5dfafdce57f62ecd.bindPopup(popup_5678b7095649c1ddc0f9956c32f48aa5)
+        ;
+
+        
+    
+    
+            feature_group_ba24d7b7a0f14e48b0c8ea79dbeac888.addTo(map_1bfd92dcf2d7e66fa722354806cc7883);
+        
+</script>
+</html>

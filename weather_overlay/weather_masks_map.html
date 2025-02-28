@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <style>
+            .rain-mask {
+                background: repeating-linear-gradient(
+                    -45deg,
+                    rgba(0, 0, 255, 0.1),
+                    rgba(0, 0, 255, 0.1) 1px,
+                    rgba(0, 0, 255, 0.15) 1px,
+                    rgba(0, 0, 255, 0.15) 3px
+                );
+            }
+            .snow-mask {
+                background: radial-gradient(
+                    circle at center,
+                    rgba(255, 255, 255, 0.2) 0%,
+                    rgba(255, 255, 255, 0.05) 100%
+                );
+            }
+            .cloudy-mask {
+                background: rgba(128, 128, 128, 0.15);
+            }
+            .sunny-mask {
+                background: rgba(255, 255, 0, 0.05);
+            }
+            .fog-mask {
+                background: rgba(200, 200, 200, 0.2);
+            }
+        </style>
+    
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_9cce5f16e6e92652ca674748e191b935 {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+        <div style="position: fixed; 
+                    bottom: 50px; right: 50px; 
+                    width: 150px;
+                    background-color: rgba(255, 255, 255, 0.9);
+                    padding: 10px;
+                    border-radius: 5px;
+                    border: 1px solid rgba(128, 128, 128, 0.5);
+                    z-index: 9999;">
+            <p style="margin-bottom: 5px;"><strong>Weather Conditions</strong></p>
+            <div style="margin-bottom: 5px;">
+                <div class="rain-mask" style="display: inline-block; width: 20px; height: 20px; border: 1px solid rgba(0,0,0,0.1);"></div>
+                <span style="margin-left: 5px;">Rain</span>
+            </div>
+            <div style="margin-bottom: 5px;">
+                <div class="snow-mask" style="display: inline-block; width: 20px; height: 20px; border: 1px solid rgba(0,0,0,0.1);"></div>
+                <span style="margin-left: 5px;">Snow</span>
+            </div>
+            <div style="margin-bottom: 5px;">
+                <div class="cloudy-mask" style="display: inline-block; width: 20px; height: 20px; border: 1px solid rgba(0,0,0,0.1);"></div>
+                <span style="margin-left: 5px;">Cloudy</span>
+            </div>
+            <div style="margin-bottom: 5px;">
+                <div class="sunny-mask" style="display: inline-block; width: 20px; height: 20px; border: 1px solid rgba(0,0,0,0.1);"></div>
+                <span style="margin-left: 5px;">Sunny</span>
+            </div>
+            <div>
+                <div class="fog-mask" style="display: inline-block; width: 20px; height: 20px; border: 1px solid rgba(0,0,0,0.1);"></div>
+                <span style="margin-left: 5px;">Fog</span>
+            </div>
+        </div>
+    
+    
+            <div class="folium-map" id="map_9cce5f16e6e92652ca674748e191b935" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_9cce5f16e6e92652ca674748e191b935 = L.map(
+                "map_9cce5f16e6e92652ca674748e191b935",
+                {
+                    center: [40.7128, -74.006],
+                    crs: L.CRS.EPSG3857,
+                    ...{
+  "zoom": 8,
+  "zoomControl": true,
+  "preferCanvas": false,
+}
+
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_f35a7e70f2659fa06bb45e683f36c1d3 = L.tileLayer(
+                "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png",
+                {
+  "minZoom": 0,
+  "maxZoom": 20,
+  "maxNativeZoom": 20,
+  "noWrap": false,
+  "attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors \u0026copy; \u003ca href=\"https://carto.com/attributions\"\u003eCARTO\u003c/a\u003e",
+  "subdomains": "abcd",
+  "detectRetina": false,
+  "tms": false,
+  "opacity": 1,
+}
+
+            );
+        
+    
+            tile_layer_f35a7e70f2659fa06bb45e683f36c1d3.addTo(map_9cce5f16e6e92652ca674748e191b935);
+        
+    
+        function geo_json_027e2c3fa9e72528f31f2157026839d6_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "fog-mask", "color": "white", "fillOpacity": 0.21794751535618265, "opacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_027e2c3fa9e72528f31f2157026839d6_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_027e2c3fa9e72528f31f2157026839d6 = L.geoJson(null, {
+                onEachFeature: geo_json_027e2c3fa9e72528f31f2157026839d6_onEachFeature,
+            
+                style: geo_json_027e2c3fa9e72528f31f2157026839d6_styler,
+            ...{
+}
+        });
+
+        function geo_json_027e2c3fa9e72528f31f2157026839d6_add (data) {
+            geo_json_027e2c3fa9e72528f31f2157026839d6
+                .addData(data);
+        }
+            geo_json_027e2c3fa9e72528f31f2157026839d6_add({"features": [{"geometry": {"coordinates": [[[-74.006, 41.2128], [-73.65244660940672, 41.06635339059328], [-73.506, 40.7128], [-73.65244660940672, 40.359246609406725], [-74.006, 40.2128], [-74.35955339059328, 40.359246609406725], [-74.506, 40.7128], [-74.35955339059328, 41.06635339059328], [-74.006, 41.2128]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_027e2c3fa9e72528f31f2157026839d6.bindTooltip(
+                `<div>
+                     Rain Area
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            geo_json_027e2c3fa9e72528f31f2157026839d6.addTo(map_9cce5f16e6e92652ca674748e191b935);
+        
+    
+        function geo_json_fce01c2bfb16c61eb694a942f6b82821_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "fog-mask", "color": "white", "fillOpacity": 0.21794751535618265, "opacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_fce01c2bfb16c61eb694a942f6b82821_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_fce01c2bfb16c61eb694a942f6b82821 = L.geoJson(null, {
+                onEachFeature: geo_json_fce01c2bfb16c61eb694a942f6b82821_onEachFeature,
+            
+                style: geo_json_fce01c2bfb16c61eb694a942f6b82821_styler,
+            ...{
+}
+        });
+
+        function geo_json_fce01c2bfb16c61eb694a942f6b82821_add (data) {
+            geo_json_fce01c2bfb16c61eb694a942f6b82821
+                .addData(data);
+        }
+            geo_json_fce01c2bfb16c61eb694a942f6b82821_add({"features": [{"geometry": {"coordinates": [[[-73.53047174185242, 40.86730849718747], [-73.56049673790582, 40.48580475013023], [-73.85149150281252, 40.237271741852425], [-74.23299524986977, 40.267296737905816], [-74.48152825814758, 40.55829150281253], [-74.45150326209418, 40.939795249869775], [-74.16050849718748, 41.18832825814758], [-73.77900475013023, 41.158303262094186], [-73.53047174185242, 40.86730849718747]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_fce01c2bfb16c61eb694a942f6b82821.bindTooltip(
+                `<div>
+                     Snow Area
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            geo_json_fce01c2bfb16c61eb694a942f6b82821.addTo(map_9cce5f16e6e92652ca674748e191b935);
+        
+    
+        function geo_json_3b45cca88d2e842da962f5c651831834_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "fog-mask", "color": "white", "fillOpacity": 0.21794751535618265, "opacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_3b45cca88d2e842da962f5c651831834_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_3b45cca88d2e842da962f5c651831834 = L.geoJson(null, {
+                onEachFeature: geo_json_3b45cca88d2e842da962f5c651831834_onEachFeature,
+            
+                style: geo_json_3b45cca88d2e842da962f5c651831834_styler,
+            ...{
+}
+        });
+
+        function geo_json_3b45cca88d2e842da962f5c651831834_add (data) {
+            geo_json_3b45cca88d2e842da962f5c651831834
+                .addData(data);
+        }
+            geo_json_3b45cca88d2e842da962f5c651831834_add({"features": [{"geometry": {"coordinates": [[[-73.71210737385377, 40.30829150281253], [-74.08421723252012, 40.21895582970243], [-74.41050849718748, 40.41890737385376], [-74.49984417029756, 40.79101723252012], [-74.29989262614623, 41.11730849718747], [-73.92778276747988, 41.20664417029757], [-73.60149150281252, 41.00669262614624], [-73.51215582970244, 40.634582767479884], [-73.71210737385377, 40.30829150281253]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_3b45cca88d2e842da962f5c651831834.bindTooltip(
+                `<div>
+                     Cloudy Area
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            geo_json_3b45cca88d2e842da962f5c651831834.addTo(map_9cce5f16e6e92652ca674748e191b935);
+        
+    
+        function geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "fog-mask", "color": "white", "fillOpacity": 0.21794751535618265, "opacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2 = L.geoJson(null, {
+                onEachFeature: geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2_onEachFeature,
+            
+                style: geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2_styler,
+            ...{
+}
+        });
+
+        function geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2_add (data) {
+            geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2
+                .addData(data);
+        }
+            geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2_add({"features": [{"geometry": {"coordinates": [[[-74.29989262614623, 40.30829150281253], [-74.49984417029756, 40.634582767479884], [-74.41050849718748, 41.00669262614624], [-74.08421723252012, 41.20664417029757], [-73.71210737385377, 41.11730849718747], [-73.51215582970244, 40.79101723252012], [-73.60149150281252, 40.41890737385376], [-73.92778276747988, 40.21895582970243], [-74.29989262614623, 40.30829150281253]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2.bindTooltip(
+                `<div>
+                     Sunny Area
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            geo_json_6b0e4c7ef1fcaf59fdb5e417b88cf9e2.addTo(map_9cce5f16e6e92652ca674748e191b935);
+        
+    
+        function geo_json_414706ff795b7905f098a2cbdf48d7aa_styler(feature) {
+            switch(feature.id) {
+                default:
+                    return {"className": "fog-mask", "color": "white", "fillOpacity": 0.21794751535618265, "opacity": 0.3, "weight": 1};
+            }
+        }
+
+        function geo_json_414706ff795b7905f098a2cbdf48d7aa_onEachFeature(feature, layer) {
+            layer.on({
+            });
+        };
+        var geo_json_414706ff795b7905f098a2cbdf48d7aa = L.geoJson(null, {
+                onEachFeature: geo_json_414706ff795b7905f098a2cbdf48d7aa_onEachFeature,
+            
+                style: geo_json_414706ff795b7905f098a2cbdf48d7aa_styler,
+            ...{
+}
+        });
+
+        function geo_json_414706ff795b7905f098a2cbdf48d7aa_add (data) {
+            geo_json_414706ff795b7905f098a2cbdf48d7aa
+                .addData(data);
+        }
+            geo_json_414706ff795b7905f098a2cbdf48d7aa_add({"features": [{"geometry": {"coordinates": [[[-74.48152825814758, 40.86730849718747], [-74.23299524986977, 41.158303262094186], [-73.85149150281252, 41.18832825814758], [-73.56049673790582, 40.939795249869775], [-73.53047174185242, 40.55829150281253], [-73.77900475013023, 40.267296737905816], [-74.16050849718748, 40.237271741852425], [-74.45150326209418, 40.48580475013023], [-74.48152825814758, 40.86730849718747]]], "type": "Polygon"}, "id": "0", "type": "Feature"}], "type": "FeatureCollection"});
+
+        
+    
+            geo_json_414706ff795b7905f098a2cbdf48d7aa.bindTooltip(
+                `<div>
+                     Fog Area
+                 </div>`,
+                {
+  "sticky": true,
+}
+            );
+        
+    
+            geo_json_414706ff795b7905f098a2cbdf48d7aa.addTo(map_9cce5f16e6e92652ca674748e191b935);
+        
+</script>
+</html>

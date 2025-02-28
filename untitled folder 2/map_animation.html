@@ -1,0 +1,91 @@
+<!-- <!DOCTYPE html>
+<html>
+<head>
+    <title>Zoom Animation</title>
+    <style>
+        #map {
+            height: 100vh;
+            width: 100vw;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+</head>
+<body>
+    <div id="map"></div>
+
+    <script>
+        var map = L.map('map').setView([28.7383, 77.0822], 5); // Mumbai coordinates
+
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; OpenStreetMap contributors'
+        }).addTo(map);
+
+        // Function to smoothly animate zoom
+        function smoothZoom(targetZoom, duration) {
+            var startZoom = map.getZoom();
+            var startTime = performance.now();
+
+            function animateZoom(currentTime) {
+                var elapsedTime = currentTime - startTime;
+                var progress = Math.min(elapsedTime / duration, 1);
+                var easeProgress = progress * (2 - progress); // Smooth easing
+
+                var newZoom = startZoom + (targetZoom - startZoom) * easeProgress;
+                map.setZoom(newZoom);
+
+                if (progress < 1) {
+                    requestAnimationFrame(animateZoom);
+                }
+            }
+
+            requestAnimationFrame(animateZoom);
+        }
+
+        // Start zoom animation after 1 second
+        setTimeout(() => smoothZoom(12, 4000), 1000); // Zoom from 5 to 12 in 4 seconds
+    </script>
+</body>
+</html> -->
+
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Google Maps API: Zoom into City</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCFok1h4tkAF3KO_53oSrxIYLMUo_poHO8&callback=initMap" 
+    async defer></script>
+    <style>
+      #map {
+        height: 100%;
+        width: 100%;
+      }
+    </style>
+  </head>
+  <body>
+    <h3>Zoom into New York City</h3>
+    <div id="map"></div>
+    
+    <script>
+      let map;
+
+      function initMap() {
+        // Coordinates for New York City
+        const city = { lat: 40.7128, lng: -74.0060 };
+
+        // Create a map centered at the city coordinates
+        map = new google.maps.Map(document.getElementById("map"), {
+          zoom: 12, // Zoom level (higher = more zoomed in)
+          center: city, // Center the map at the city
+        });
+
+        // Add a marker at the city location
+        const marker = new google.maps.Marker({
+          position: city,
+          map: map,
+          title: "New York City",
+        });
+      }
+    </script>
+  </body>
+</html>
